@@ -1,3 +1,4 @@
+//updated 4/27/2023
 const State = require('../model/State');
 
 const getAllStates = async (req, res) => {
@@ -60,12 +61,11 @@ const updateState = async (req, res) => {
 }
 
 const postFunFact = async (req, res) => {
-    if (!req?.body?.id) {
-        return res.status(400).json({ 'message': 'ID parameter is required.' });
-    }
-    const state = await State.findOne({ _id: req.body.id }).exec();
+    if (!req?.params?.id) return res.status(400).json({ 'message': 'State Code required.' });
+
+    const state = await State.findOne({ stateCode: req.params.id }).exec();
     if (!state) {
-        return res.status(204).json({ "message": `No state matches provided ID ${req.body.id}.` });
+        return res.status(204).json({ "message": `No state matches ID ${req.params.id}.` });
     }
     if (req.body?.funfact && Array.isArray(req.body.funfact)) {
       state.funfact.push(...req.body.funfact); // Add multiple fun facts at once
@@ -76,13 +76,13 @@ const postFunFact = async (req, res) => {
     res.json(result);
 };
 
-const patchFunFact = async (req, res) => {
-    if (!req?.body?.id || !req?.body?.index) {
-        return res.status(400).json({ 'message': 'ID parameter or Index is required.' });
-    }
-    const state = await State.findOne({ _id: req.body.id }).exec();
+const patchFunFact = async (req, res) => {    
+    if (!req?.params?.id) return res.status(400).json({ 'message': 'State Code required.' });
+    if (!req?.body?.index) return res.status(400).json({ 'message': 'Index is required.' });
+
+    const state = await State.findOne({ stateCode: req.params.id }).exec();
     if (!state) {
-        return res.status(204).json({ "message": `No state matches provided ID ${req.body.id}.` });
+        return res.status(204).json({ "message": `No state matches ID ${req.params.id}.` });
     }
     if (req.body?.funfact) state.funfact[req?.body?.index-1]= req.body.funfact;
     const result = await state.save();
@@ -90,10 +90,13 @@ const patchFunFact = async (req, res) => {
 };
 
 const deleteFunFact = async (req, res) => {
-    if (!req?.body?.id || !req?.body?.index) {
-        return res.status(400).json({ 'message': 'ID parameter or Index is required.' });
-    }
+    if (!req?.params?.id) return res.status(400).json({ 'message': 'State Code required.' });
+    if (!req?.body?.index) return res.status(400).json({ 'message': 'Index is required.' });
+
     const state = await State.findOne({ stateCode: req.params.id }).exec();
+    if (!state) {
+        return res.status(204).json({ "message": `No state matches ID ${req.params.id}.` });
+    }
     const actualIndex = req?.body?.index - 1;
     if (state.funfact && state.funfact.length > actualIndex) {
         const funFactToDelete = state.funfact[actualIndex];
@@ -115,7 +118,7 @@ const deleteFunFact = async (req, res) => {
 const deleteState = async (req, res) => {
     if (!req?.body?.id) return res.status(400).json({ 'message': 'State ID required.' });
 
-    const state = await State.findOne({ _id: req.body.id }).exec();
+    const state = await State.findOne({ stateCode: req.body.id }).exec();
     if (!state) {
         return res.status(204).json({ "message": `No state matches ID ${req.body.id}.` });
     }
