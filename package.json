@@ -1,0 +1,45 @@
+{
+  "name": "foundation_web",
+  "version": "1.0.0",
+  "description": "This will be the foundational code I use for all my sites",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MattSux/foundation_web.git"
+  },
+  "keywords": [
+    "base",
+    "foundation",
+    "web",
+    "html",
+    "css",
+    "javascript",
+    "npm",
+    "nodejs",
+    "nodemon"
+  ],
+  "author": "Matt Heilman (MattSux)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MattSux/foundation_web/issues"
+  },
+  "homepage": "https://github.com/MattSux/foundation_web#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.3",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
